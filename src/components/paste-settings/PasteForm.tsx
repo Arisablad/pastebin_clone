@@ -41,9 +41,15 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must have at least 2 characters.',
   }),
+  code: z.string().min(2, {
+    message: 'Paste must have at least 2 characters.',
+  }),
+  userId: z.string().min(2, {
+    message: 'Paste must have at least 2 characters.',
+  }),
 });
 
-const PasteForm = () => {
+const PasteForm = ({ code }: { code?: string }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,10 +57,10 @@ const PasteForm = () => {
       syntax: '',
       exposure: '',
       title: '',
+      code: code,
+      userId: 'Anonymous',
     },
   });
-
-  type SchemaType = z.infer<typeof formSchema>;
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {

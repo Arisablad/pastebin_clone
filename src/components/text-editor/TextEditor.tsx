@@ -7,9 +7,7 @@ function TextEditor() {
         <p className="font-medium text-xl">New Paste</p>
         <p>Syntax Highlighting</p>
       </div>
-      <textarea className="border border-border h-[300px] w-full">
-        TextEditor
-      </textarea>
+      <div className="border border-border h-[300px] w-full">TextEditor</div>
     </div>
   );
 }

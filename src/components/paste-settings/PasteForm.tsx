@@ -41,8 +41,8 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must have at least 2 characters.',
   }),
-  code: z.string().min(2, {
-    message: 'Paste must have at least 2 characters.',
+  code: z.string().min(5, {
+    message: 'Paste must have at least 5 characters.',
   }),
   userId: z.string().min(2, {
     message: 'Paste must have at least 2 characters.',

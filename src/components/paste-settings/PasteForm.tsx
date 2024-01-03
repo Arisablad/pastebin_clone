@@ -14,13 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Link from 'next/link';
 import { Categories } from '@/constants/Categories';
 import SelectField from '../shared/SelectField';
@@ -73,8 +66,8 @@ const PasteForm = ({ code }: { code?: string }) => {
       },
       body: JSON.stringify(values),
     });
+    console.log('values', values);
   }
-  // ...
 
   return (
     <Form {...form}>

@@ -1,7 +1,7 @@
 import { DbConnect } from '@/lib/DbConnection';
 import { PasteModel } from '@/models/MongoModels/PasteModel';
 import { NextApiRequest } from 'next';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextApiRequest) {
   try {
@@ -14,11 +14,11 @@ export async function GET(request: NextApiRequest) {
   }
 }
 
-export async function POST(request: NextApiRequest) {
+export async function POST(request: NextRequest) {
   try {
     await DbConnect();
     const { category, syntax, exposure, title, code, userId } =
-      await request.body.json();
+      await request.json();
     console.log(
       'Sended data:',
       category,
@@ -28,6 +28,7 @@ export async function POST(request: NextApiRequest) {
       code,
       userId
     );
+    return NextResponse.json({ hello: 'World' });
   } catch (error) {
     console.log(error);
     throw new Error('Failed to POST PASTES!');

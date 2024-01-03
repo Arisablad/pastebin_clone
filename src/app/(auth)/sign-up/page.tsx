@@ -16,15 +16,24 @@ import { z } from 'zod';
 import Link from 'next/link';
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Choose proper username.',
-  }),
-  email: z.string().min(2, {
-    message: 'Choose proper username.',
-  }),
-  password: z.string().min(2, {
-    message: 'Choose proper syntax.',
-  }),
+  username: z
+    .string()
+    .min(3, {
+      message: 'Choose proper username at least 3 characters.',
+    })
+    .max(30, { message: 'Choose proper username, max 30 characters.' }),
+  email: z
+    .string()
+    .min(5, {
+      message: 'Choose proper email 5 characters.',
+    })
+    .max(40, { message: 'Choose proper email, max 40 characters.' }),
+  password: z
+    .string()
+    .min(6, {
+      message: 'Choose proper password. Min 6 characters',
+    })
+    .max(30, { message: 'Choose proper password, max 30 characters.' }),
 });
 
 const SignUpPage = () => {

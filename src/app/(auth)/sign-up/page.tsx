@@ -51,6 +51,14 @@ const SignUpPage = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log('values sign up');
+
+    const response = fetch('api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
   }
 
   return (

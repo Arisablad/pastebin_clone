@@ -38,12 +38,19 @@ const SignInPage = () => {
       password: '',
     },
   });
-
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log('values signin');
+    console.log('values sign in');
+
+    const response = fetch('api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
   }
 
   return (

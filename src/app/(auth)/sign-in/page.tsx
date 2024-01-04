@@ -14,6 +14,9 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
   username: z
@@ -38,19 +41,40 @@ const SignInPage = () => {
       password: '',
     },
   });
+
+  const router = useRouter();
+  const { toast } = useToast();
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log('values sign in');
+    try {
+      const response = await signIn('credentials', {
+        username: values.username,
+        password: values.password,
+        redirect: false,
+      });
+      if (response?.error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error something went wrong',
+          description: response.error || 'Unknown error',
+        });
+        return;
+      }
 
-    const response = fetch('api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
+      toast({
+        variant: 'default',
+        title: 'Login successfully',
+        description: 'redirecting to home page',
+      });
+      router.push('/');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error something went wrong',
+        description:
+          (error as { message?: string })?.message || 'Unknown error',
+      });
+    }
   }
 
   return (

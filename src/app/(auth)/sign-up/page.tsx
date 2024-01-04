@@ -66,9 +66,9 @@ const SignUpPage = () => {
         toast({
           variant: 'default',
           title: 'User created successfully',
-          description: 'Redirecting to Home-Page',
+          description: 'Now you can log in',
         });
-        router.push('/', { scroll: false });
+        router.push('sign-in', { scroll: false });
       } else {
         const errorData = await response.json();
         toast({

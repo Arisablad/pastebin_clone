@@ -52,27 +52,38 @@ const SignUpPage = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log('values sign up');
-
-    const response = await fetch('api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
-
-    if (response.ok) {
-      toast({
-        variant: 'default',
-        title: 'User created successfully',
-        description: 'Redirecting to Home-Page',
+    try {
+      const response = await fetch('api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
       });
-      router.push('/', { scroll: false });
+
+      if (response.ok) {
+        toast({
+          variant: 'default',
+          title: 'User created successfully',
+          description: 'Redirecting to Home-Page',
+        });
+        router.push('/', { scroll: false });
+      } else {
+        const errorData = await response.json();
+        toast({
+          variant: 'destructive',
+          title: 'Error something went wrong',
+          description: errorData?.message,
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error something went wrong',
+        description:
+          (error as { message?: string })?.message || 'Unknown error',
+      });
     }
   }
 

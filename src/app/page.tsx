@@ -2,6 +2,7 @@ import Advertisment from '@/components/advertisments/Advertisment';
 import Paste from '@/components/containers/Paste';
 import Sidebar from '@/components/navbar/Sidebar';
 
+
 const getPublicPastes = async () => {};
 
 const Home = async () => {

@@ -14,8 +14,9 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
+import { useSession } from 'next-auth/react';
 
 const formSchema = z.object({
   username: z
@@ -51,6 +52,7 @@ const SignUpPage = () => {
 
   const router = useRouter();
   const { toast } = useToast();
+  const { data: session } = useSession();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -87,12 +89,16 @@ const SignUpPage = () => {
     }
   }
 
+  if (session) {
+    redirect('/');
+  }
+
   return (
     <div className="bg-[#F9FAFB] mt-24 flex items-center">
       <div className="h-max mx-auto flex flex-col items-center">
         LOGO
         <h1 className="text-xl font-bold text-center pb-10">
-          Sign up to your account
+          Create a new account
         </h1>
         <div className="bg-white shadow-xl p-10 flex flex-col gap-4 text-sm ">
           <Form {...form}>

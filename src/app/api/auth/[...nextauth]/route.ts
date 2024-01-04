@@ -65,7 +65,8 @@ catch(error){
 
 export const authOptions = {
   pages:{
-    signIn: "/sign-in"
+    signIn: "/sign-in",
+    signOut: "/sign-out"
   },
   providers: [
     CredentialsProvider({
@@ -94,7 +95,7 @@ export const authOptions = {
   callbacks:{
     async jwt({token, user}:any){
       if(user){
-        token.username = user.username
+        token.name = user.username
         token.email = user.email
         token.id = user.id
       }
@@ -102,7 +103,7 @@ export const authOptions = {
     },
     async session({session, token}:any){
       if(token){
-        session.user.username = token.username
+        session.user.name = token.username
         session.user.email = token.email
         session.user.id = token.id
       }

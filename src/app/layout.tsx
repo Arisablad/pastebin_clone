@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import MaxWidthWrapper from '@/components/containers/MaxWidthWrapper';
 import Navbar from '@/components/navbar/Navbar';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navbar />
         <MaxWidthWrapper>{children}</MaxWidthWrapper>
+        <Toaster />
       </body>
     </html>
   );

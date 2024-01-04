@@ -14,6 +14,8 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   username: z
@@ -27,7 +29,8 @@ const formSchema = z.object({
     .min(5, {
       message: 'Choose proper email 5 characters.',
     })
-    .max(40, { message: 'Choose proper email, max 40 characters.' }),
+    .max(40, { message: 'Choose proper email, max 40 characters.' })
+    .email('This is not a valid email.'),
   password: z
     .string()
     .min(6, {
@@ -46,19 +49,31 @@ const SignUpPage = () => {
     },
   });
 
+  const router = useRouter();
+  const { toast } = useToast();
+
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log('values sign up');
 
-    const response = fetch('api/register', {
+    const response = await fetch('api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(values),
     });
+
+    if (response.ok) {
+      toast({
+        variant: 'default',
+        title: 'User created successfully',
+        description: 'Redirecting to Home-Page',
+      });
+      router.push('/', { scroll: false });
+    }
   }
 
   return (

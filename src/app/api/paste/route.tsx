@@ -35,14 +35,12 @@ export async function GET(request: NextApiRequest) {
   }
 }
 
-export async function POST(request: NextApiRequest, response: NextApiResponse) {
+export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const session = await getServerSession(authOptions);
 
     await DbConnect();
-    const { category, syntax, exposure, title, code } = await request.body;
-
-    console.log(request.body);
+    const { category, syntax, exposure, title, code } = await request.json();
 
     // if user added paste as anonymous add it only for pastes collection
 
@@ -75,11 +73,13 @@ export async function POST(request: NextApiRequest, response: NextApiResponse) {
       // add new private paste to user
       await user.updateOne({
         $push: {
-          category,
-          syntax,
-          exposure,
-          title,
-          code,
+          pastes: {
+            category,
+            syntax,
+            exposure,
+            title,
+            code,
+          },
         },
       });
       return NextResponse.json({ message: 'paste created' }, { status: 201 });

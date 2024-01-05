@@ -41,6 +41,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     await DbConnect();
     const { category, syntax, exposure, title, code } = await request.json();
+    const user = User.findById(session.user.id);
 
     // if user added paste as anonymous add it only for pastes collection
 
@@ -59,8 +60,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
           { status: 401 }
         );
       }
-
-      const user = User.findById(session.user.id);
 
       // if user doesnt exist
       if (!user) {
@@ -82,7 +81,44 @@ export async function POST(request: NextRequest, response: NextResponse) {
           },
         },
       });
-      return NextResponse.json({ message: 'paste created' }, { status: 201 });
+      return NextResponse.json(
+        { message: 'Private paste created' },
+        { status: 201 }
+      );
+    }
+
+    // if paste isn't private
+    if (exposure !== 'private') {
+      // If user is logged in add paste to his account
+      if (session) {
+        await user.updateOne({
+          $push: {
+            pastes: {
+              category,
+              syntax,
+              exposure,
+              title,
+              code,
+            },
+          },
+        });
+      }
+
+      // Create new paste for anonymous users
+      await PasteModel.create({
+        category,
+        syntax,
+        exposure,
+        title,
+        code,
+      });
+      return NextResponse.json(
+        {
+          message: 'Paste Created Successfully',
+        },
+        { status: 200 }
+      );
+      //
     }
   } catch (error) {
     console.log(error);

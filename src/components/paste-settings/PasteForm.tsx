@@ -84,7 +84,7 @@ const PasteForm = ({ code }: { code?: string }) => {
     if (response.ok) {
       toast({
         variant: 'default',
-        title: 'Successfully created a private paste',
+        title: 'Success',
         description: responseMessage.message,
       });
     }

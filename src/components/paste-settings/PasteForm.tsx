@@ -20,6 +20,8 @@ import SelectField from '../shared/SelectField';
 import { PROGRAMMING_LANGUAGES } from '@/constants/programming_languages';
 import { PASTE_EXPOSURE } from '@/constants/paste_exposure';
 import { Input } from '../ui/input';
+import { useSession } from 'next-auth/react';
+import { toast } from '../ui/use-toast';
 
 const formSchema = z.object({
   category: z.string().min(2, {
@@ -37,12 +39,11 @@ const formSchema = z.object({
   code: z.string().min(5, {
     message: 'Paste must have at least 5 characters.',
   }),
-  userId: z.string().min(2, {
-    message: 'Paste must have at least 2 characters.',
-  }),
 });
 
 const PasteForm = ({ code }: { code?: string }) => {
+  const { data: session } = useSession();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +52,6 @@ const PasteForm = ({ code }: { code?: string }) => {
       exposure: '',
       title: '',
       code: code,
-      userId: 'Anonymous',
     },
   });
 
@@ -59,6 +59,18 @@ const PasteForm = ({ code }: { code?: string }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
+    if (values.exposure.toLowerCase().trim() === 'private' && !session) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'You need to sign in to create a private paste',
+      });
+      return;
+    }
+
+    console.log('values', values);
+
     const response = await fetch(`/api/paste`, {
       method: 'POST',
       headers: {
@@ -66,7 +78,16 @@ const PasteForm = ({ code }: { code?: string }) => {
       },
       body: JSON.stringify(values),
     });
-    console.log('values', values);
+
+    const responseMessage = await response.json();
+
+    if (response.ok) {
+      toast({
+        variant: 'default',
+        title: 'Successfully created a private paste',
+        description: responseMessage.message,
+      });
+    }
   }
 
   return (

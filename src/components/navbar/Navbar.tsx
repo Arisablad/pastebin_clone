@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="fixed top-0 left-0 w-full px-4 bg-gradient-to-b from-[#023859] to-[#02456c] h-14 xl:px-[226px] flex justify-between items-center">
+      <div className="fixed z-50 top-0 left-0 w-full px-4 bg-gradient-to-b from-[#023859] to-[#02456c] h-14 xl:px-[226px] flex justify-between items-center">
         <div>
           <Link href={'/'} className="flex gap-4 items-center group">
             <ScrollText className="text-yellow-600 group-hover:text-blue-300 transition duration-300" />

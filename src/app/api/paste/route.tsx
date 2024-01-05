@@ -1,9 +1,10 @@
 import { DbConnect } from '@/lib/DbConnection';
 import { PasteModel } from '@/models/MongoModels/PasteModel';
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
-
-// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { User } from '@/models/MongoModels/UserModel';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 // export default async function handler(req, res) {
 //   const session = await getSession({ req });
@@ -34,21 +35,55 @@ export async function GET(request: NextApiRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextApiRequest, response: NextApiResponse) {
   try {
+    const session = await getServerSession(authOptions);
+
     await DbConnect();
-    const { category, syntax, exposure, title, code, userId } =
-      await request.json();
-    console.log(
-      'Sended data:',
-      category,
-      syntax,
-      exposure,
-      title,
-      code,
-      userId
-    );
-    return NextResponse.json({ hello: 'World' });
+    const { category, syntax, exposure, title, code } = await request.body;
+
+    console.log(request.body);
+
+    // if user added paste as anonymous add it only for pastes collection
+
+    if (!category || !syntax || !exposure || !title || !code) {
+      return NextResponse.json(
+        { message: 'You need to fill all fields' },
+        { status: 500 }
+      );
+    }
+
+    if (exposure.toLowerCase().trim() === 'private') {
+      // check if user is authenticated
+      if (!session) {
+        return NextResponse.json(
+          { message: "You're not authorized to create a private paste" },
+          { status: 401 }
+        );
+      }
+
+      const user = User.findById(session.user.id);
+
+      // if user doesnt exist
+      if (!user) {
+        return NextResponse.json(
+          { message: "User doesn't exist" },
+          { status: 401 }
+        );
+      }
+
+      // add new private paste to user
+      await user.updateOne({
+        $push: {
+          category,
+          syntax,
+          exposure,
+          title,
+          code,
+        },
+      });
+      return NextResponse.json({ message: 'paste created' }, { status: 201 });
+    }
   } catch (error) {
     console.log(error);
     throw new Error('Failed to POST PASTES!');

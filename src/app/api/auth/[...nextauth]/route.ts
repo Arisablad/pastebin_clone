@@ -83,7 +83,6 @@ export const authOptions = {
         try {
           if(credentials){
           const user = "" || await login(credentials as Credentials);
-          console.log("this is the user,", user)
           return user
           }
         } catch (error) {
@@ -103,7 +102,7 @@ export const authOptions = {
     },
     async session({session, token}:any){
       if(token){
-        session.user.name = token.username
+        session.user.name = token.name
         session.user.email = token.email
         session.user.id = token.id
       }

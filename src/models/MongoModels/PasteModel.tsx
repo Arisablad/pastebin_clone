@@ -31,12 +31,12 @@ export const pasteSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    // userId: {
-    //   type: String,
-    //   required: true,
-    //   min: 2,
-    //   max: 30,
-    // },
+    userId: {
+      type: String,
+      required: true,
+      min: 2,
+      max: 30,
+    },
   },
   { timestamps: true }
 );

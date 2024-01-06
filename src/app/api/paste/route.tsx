@@ -6,24 +6,6 @@ import { getServerSession } from 'next-auth/next';
 import { User } from '@/models/MongoModels/UserModel';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-// export default async function handler(req, res) {
-//   const session = await getSession({ req });
-
-//   if (!session) {
-//     res.status(401).json({ error: 'Unauthorized' });
-//     return;
-//   }
-
-//   // Sprawdź, czy użytkownik ma dostęp do zasobu
-//   if (session.userId === req.body.resourceOwnerId) {
-//     // Udziel dostępu
-//     res.status(200).json({ message: 'Authorized' });
-//   } else {
-//     // Brak dostępu
-//     res.status(403).json({ error: 'Forbidden' });
-//   }
-// }
-
 export async function GET(request: NextApiRequest) {
   try {
     await DbConnect();
@@ -78,6 +60,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
             exposure,
             title,
             code,
+            userId: session.user.id,
           },
         },
       });
@@ -99,6 +82,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
               exposure,
               title,
               code,
+              userId: session.user.id,
             },
           },
         });
@@ -111,6 +95,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
         exposure,
         title,
         code,
+        userId: 'Annonymous',
       });
       return NextResponse.json(
         {

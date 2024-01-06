@@ -6,11 +6,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { User } from '@/models/MongoModels/UserModel';
 
-export async function GET(request: NextApiRequest) {
+export async function GET(
+  request: NextApiRequest,
+  { params }: { params: { pasteId: string } }
+) {
   try {
-    const { pasteId } = request.query;
+    const pasteId = params.pasteId;
     const session = await getServerSession(authOptions);
-    const user = User.findById(session.user.id);
+    let user 
+
+
+    if(session){
+    user = User.findById(session.user.id);
+    }
 
     if (!pasteId) {
       return NextResponse.json(
@@ -19,6 +27,7 @@ export async function GET(request: NextApiRequest) {
       );
     }
     await DbConnect();
+    console.log('pasteId', pasteId);
     const foundPaste = await PasteModel.findById(pasteId);
 
     if (!foundPaste) {
@@ -28,10 +37,10 @@ export async function GET(request: NextApiRequest) {
       );
     }
 
-    if (foundPaste.exposure === 'private' && !session) {
+    if (foundPaste.exposure.toLowerCase().trim("") === 'private' && !session) {
       return NextResponse.json(
         {
-          message: 'You need to sign in to see a paste',
+          message: 'You need to sign in to see a private paste',
         },
         {
           status: 401,
@@ -40,8 +49,9 @@ export async function GET(request: NextApiRequest) {
     }
 
     if (
+      session &&
       foundPaste.userId !== 'Annonymous' &&
-      foundPaste.userId !== session.userId
+      foundPaste.userId !== session.user.id
     ) {
       return NextResponse.json(
         {
@@ -63,7 +73,7 @@ export async function GET(request: NextApiRequest) {
     console.log('error', error);
     return NextResponse.json(
       { message: 'Error ocurred during getting single paste' },
-      { status: 200 }
+      { status: 500 }
     );
   }
 }

@@ -36,9 +36,12 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must have at least 2 characters.',
   }),
-  code: z.string().min(5, {
-    message: 'Paste must have at least 5 characters.',
-  }),
+  code: z
+    .string()
+    .min(2, {
+      message: 'Title must have at least 2 characters.',
+    })
+    .optional(),
 });
 
 const PasteForm = ({ code }: { code?: string }) => {
@@ -51,7 +54,6 @@ const PasteForm = ({ code }: { code?: string }) => {
       syntax: '',
       exposure: '',
       title: '',
-      code: code,
     },
   });
 
@@ -69,6 +71,10 @@ const PasteForm = ({ code }: { code?: string }) => {
       return;
     }
 
+    values = {
+      ...values,
+      code: code || '',
+    };
     console.log('values', values);
 
     const response = await fetch(`/api/paste`, {

@@ -6,24 +6,23 @@ import { getServerSession } from 'next-auth/next';
 import { User } from '@/models/MongoModels/UserModel';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-export async function GET(request: NextApiRequest) {
-  try {
-    await DbConnect();
-    const pastes = await PasteModel.find();
-    return NextResponse.json(pastes);
-  } catch (error) {
-    console.log(error);
-    throw new Error('Failed to fetch pastes!');
-  }
-}
+// export async function GET(request: NextApiRequest) {
+//   try {
+//     await DbConnect();
+//     const pastes = await PasteModel.find();
+//     return NextResponse.json(pastes);
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error('Failed to fetch pastes!');
+//   }
+// }
 
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const session = await getServerSession(authOptions);
-
     await DbConnect();
     const { category, syntax, exposure, title, code } = await request.json();
-    const user = User.findById(session.user.id);
+    const user = session ? User.findById(session.user.id) : null;
 
     // if user added paste as anonymous add it only for pastes collection
 
@@ -51,19 +50,31 @@ export async function POST(request: NextRequest, response: NextResponse) {
         );
       }
 
-      // add new private paste to user
-      await user.updateOne({
-        $push: {
-          pastes: {
-            category,
-            syntax,
-            exposure,
-            title,
-            code,
-            userId: session.user.id,
+      if (user) {
+        // add new private paste to user
+        await user.updateOne({
+          $push: {
+            pastes: {
+              category,
+              syntax,
+              exposure,
+              title,
+              code,
+              userId: session?.user.id,
+            },
           },
-        },
+        });
+      }
+
+      await PasteModel.create({
+        category,
+        syntax,
+        exposure,
+        title,
+        code,
+        userId: session?.user.id || 'Anonymous',
       });
+
       return NextResponse.json(
         { message: 'Private paste created' },
         { status: 201 }
@@ -82,7 +93,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
               exposure,
               title,
               code,
-              userId: session.user.id,
+              userId: session?.user.id || 'Anonymous',
             },
           },
         });

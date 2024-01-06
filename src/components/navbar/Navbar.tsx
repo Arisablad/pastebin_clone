@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const URL = process.env.NEXT_PUBLIC_URL as string;
 
   return (
     <nav>
@@ -24,10 +25,10 @@ const Navbar = () => {
         {!session ? (
           <ul className="hidden md:flex items-center gap-4">
             <Button asChild variant={'outline'}>
-              <Link href={'sign-up'}>Sign Up</Link>
+              <Link href={`${URL}/sign-up`}>Sign Up</Link>
             </Button>
             <Button asChild>
-              <Link href={'sign-in'}>Sign In</Link>
+              <Link href={`${URL}/sign-in`}>Sign In</Link>
             </Button>
           </ul>
         ) : (

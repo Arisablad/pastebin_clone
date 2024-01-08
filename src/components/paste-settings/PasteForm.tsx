@@ -28,7 +28,7 @@ const formSchema = z.object({
   category: z.string().min(2, {
     message: 'Choose proper category.',
   }),
-  syntax: z.string().min(2, {
+  syntax: z.string().min(1, {
     message: 'Choose proper syntax.',
   }),
   exposure: z.string().min(2, {
@@ -45,7 +45,13 @@ const formSchema = z.object({
     .optional(),
 });
 
-const PasteForm = ({ code }: { code?: string }) => {
+const PasteForm = ({
+  code,
+  handleNewLanguage,
+}: {
+  code?: string;
+  handleNewLanguage?: (lang: string) => void;
+}) => {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -131,6 +137,7 @@ const PasteForm = ({ code }: { code?: string }) => {
           placeholder="Select a language for syntax Highlighting"
           name="syntax"
           label="Syntax"
+          handleNewLanguage={handleNewLanguage}
         />
 
         {/*Paste Exposure*/}

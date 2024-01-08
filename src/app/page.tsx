@@ -7,12 +7,7 @@ const Home = () => {
     <div className="grid grid-cols-1 xl:grid-cols-10 gap-4 border border-border p-2">
       <Advertisment />
       <Sidebar />
-      <Paste
-        label="New paste"
-        showSettings={true}
-        disabled={false}
-        language="js"
-      />
+      <Paste label="New paste" showSettings={true} disabled={false} />
     </div>
   );
 };

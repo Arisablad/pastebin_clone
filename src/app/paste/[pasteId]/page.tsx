@@ -91,10 +91,10 @@ function SinglePastePage() {
           <Paste
             showSettings={false}
             disabled={true}
-            language="js"
             label={`Created By ${paste.userName}`}
             fetchedPaste={paste}
             pasteExposure={paste.exposure}
+            language={paste.syntax}
           />
           <ul className="bg-accent-foreground/20 rounded-md px-4 lg:col-span-8 flex flex-col py-2 items-center">
             <p className=" font-mono text-xl">Additional Paste info:</p>

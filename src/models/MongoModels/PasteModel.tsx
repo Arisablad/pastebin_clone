@@ -11,7 +11,7 @@ export const pasteSchema = new mongoose.Schema(
     syntax: {
       type: String,
       required: true,
-      min: 2,
+      min: 1,
       max: 30,
     },
     exposure: {

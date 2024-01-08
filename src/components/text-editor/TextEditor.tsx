@@ -30,7 +30,7 @@ function TextEditor({
         <p className="font-medium text-xl">{label}</p>
         <p>Syntax Highlighting</p>
       </div>
-      <div className="border border-border h-[300px] w-full">
+      <div className="border border-border h-[300px] w-full overflow-y-auto">
         <CodeEditor
           value={code}
           language={language}

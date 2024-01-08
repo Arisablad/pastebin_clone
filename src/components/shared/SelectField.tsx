@@ -23,19 +23,26 @@ const SelectField = ({
   placeholder,
   name,
   label,
+  handleNewLanguage,
 }: {
   control: Control<any>;
   items: string[];
   placeholder: string;
   name: string;
   label: string;
+  handleNewLanguage?: (lang: string) => void;
 }) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem
+          onChange={(event) =>
+            handleNewLanguage &&
+            handleNewLanguage((event.target as HTMLSelectElement).value)
+          }
+        >
           <FormLabel>{label}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>

@@ -37,6 +37,12 @@ export const pasteSchema = new mongoose.Schema(
       min: 2,
       max: 30,
     },
+    userName: {
+      type: String,
+      required: true,
+      min: 2,
+      max: 30,
+    },
   },
   { timestamps: true }
 );

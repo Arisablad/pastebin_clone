@@ -22,6 +22,7 @@ import { PASTE_EXPOSURE } from '@/constants/paste_exposure';
 import { Input } from '../ui/input';
 import { useSession } from 'next-auth/react';
 import { toast } from '../ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   category: z.string().min(2, {
@@ -46,6 +47,7 @@ const formSchema = z.object({
 
 const PasteForm = ({ code }: { code?: string }) => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,15 +87,18 @@ const PasteForm = ({ code }: { code?: string }) => {
       body: JSON.stringify(values),
     });
 
-    const responseMessage = await response.json();
+    const parsedResponse = await response.json();
 
     if (response.ok) {
       toast({
         variant: 'default',
         title: 'Success',
-        description: responseMessage.message,
+        description: parsedResponse.message,
       });
     }
+    router.push(
+      `${process.env.NEXT_PUBLIC_URL}/paste/${parsedResponse.pasteId}`
+    );
   }
 
   return (

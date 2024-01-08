@@ -13,12 +13,14 @@ function TextEditor({
   disabled = true,
   label = 'New paste',
   language = 'js',
+  pasteExposure = null,
 }: {
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
   disabled: boolean;
   label: string | ReactNode;
   language: string;
+  pasteExposure?: string | null;
 }) {
   return (
     <div className="px-4 lg:col-span-8 mt-10">
@@ -42,6 +44,12 @@ function TextEditor({
           }}
         />
       </div>
+      {pasteExposure && (
+        <p className="text-right mt-2">
+          Paste Exposure:{' '}
+          <span className="font-medium underline  ">{pasteExposure}</span>
+        </p>
+      )}
     </div>
   );
 }

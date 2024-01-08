@@ -61,22 +61,24 @@ export async function POST(request: NextRequest, response: NextResponse) {
               title,
               code,
               userId: session?.user.id,
+              userName: session?.user.name,
             },
           },
         });
       }
 
-      await PasteModel.create({
+      const newlyCreatedPaste = await PasteModel.create({
         category,
         syntax,
         exposure,
         title,
         code,
         userId: session?.user.id || 'Anonymous',
+        userName: session?.user.name || 'Anonymous',
       });
 
       return NextResponse.json(
-        { message: 'Private paste created' },
+        { message: 'Private paste created', pasteId: newlyCreatedPaste._id },
         { status: 201 }
       );
     }
@@ -85,7 +87,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     if (exposure !== 'private') {
       // If user is logged in add paste to his account
       if (session) {
-        await user.updateOne({
+        await user?.updateOne({
           $push: {
             pastes: {
               category,
@@ -94,23 +96,26 @@ export async function POST(request: NextRequest, response: NextResponse) {
               title,
               code,
               userId: session?.user.id || 'Anonymous',
+              userName: session?.user.name || 'Anonymous',
             },
           },
         });
       }
 
       // Create new paste for anonymous users
-      await PasteModel.create({
+      const newlyCreatedPaste = await PasteModel.create({
         category,
         syntax,
         exposure,
         title,
         code,
-        userId: 'Annonymous',
+        userId: session?.user.id || 'Annonymous',
+        userName: session?.user.name || 'Anonymous',
       });
       return NextResponse.json(
         {
           message: 'Paste Created Successfully',
+          pasteId: newlyCreatedPaste._id,
         },
         { status: 200 }
       );

@@ -14,6 +14,8 @@ type TPaste = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  userName: string;
+  pasteId: string;
 };
 
 type TPasteProps = {
@@ -22,6 +24,7 @@ type TPasteProps = {
   language: string;
   label: string;
   fetchedPaste?: TPaste;
+  pasteExposure?: string | null;
 };
 
 function Paste({
@@ -30,10 +33,9 @@ function Paste({
   language = 'js',
   label = 'New paste',
   fetchedPaste,
+  pasteExposure = null,
 }: TPasteProps) {
   const [code, setCode] = useState(fetchedPaste?.code || '');
-
-  console.log('code', code);
 
   return (
     <>
@@ -43,6 +45,7 @@ function Paste({
         code={code}
         setCode={setCode}
         language={language}
+        pasteExposure={pasteExposure}
       />
 
       {showSettings && <PasteSettings code={code} />}

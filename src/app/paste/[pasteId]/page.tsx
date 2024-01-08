@@ -20,12 +20,14 @@ type Paste = {
   userId: string;
   __v: number;
   _id: string;
+  userName: string;
+  pasteId: string;
 };
 
 function SinglePastePage() {
   const params = useParams<{ pasteId: string }>();
   const pasteId = params.pasteId;
-  const session = useSession();
+  const { data: session } = useSession();
   const [paste, setPaste] = useState<Paste | null>(null);
   const { toast } = useToast();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
@@ -77,13 +79,25 @@ function SinglePastePage() {
       <Advertisment />
       <Sidebar />
       {paste && Object.keys(paste).length > 0 ? (
-        <Paste
-          showSettings={false}
-          disabled={true}
-          language="js"
-          label="Created By"
-          fetchedPaste={paste}
-        />
+        <div className="lg:col-span-8">
+          <h1 className="lg:col-span-8 text-center text-xl font-semibold">
+            Title: {paste.title}
+          </h1>
+          <Paste
+            showSettings={false}
+            disabled={true}
+            language="js"
+            label={`Created By ${paste.userName}`}
+            fetchedPaste={paste}
+            pasteExposure={paste.exposure}
+          />
+          <ul className="bg-accent-foreground/20 rounded-md px-4 lg:col-span-8 flex flex-col py-2 items-center">
+            <p className=" font-mono text-xl">Additional Paste info:</p>
+            <li>Category : {paste.category}</li>
+            <li>Created-At: {paste.createdAt}</li>
+            <li>Syntax: {paste.syntax}</li>
+          </ul>
+        </div>
       ) : (
         <div className="w-full lg:col-span-8">
           <p>Error {errors}</p>

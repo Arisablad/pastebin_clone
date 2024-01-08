@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 type Paste = {
   category: string;
@@ -98,9 +99,17 @@ function SinglePastePage() {
           />
           <ul className="bg-accent-foreground/20 rounded-md px-4 lg:col-span-8 flex flex-col py-2 items-center">
             <p className=" font-mono text-xl">Additional Paste info:</p>
-            <li>Category : {paste.category}</li>
-            <li>Created-At: {paste.createdAt}</li>
-            <li>Syntax: {paste.syntax}</li>
+            <li>
+              <span className="text-blue-800">Category : </span>
+              {paste.category}
+            </li>
+            <li>
+              <span className="text-blue-800">Created At : </span>
+              {dayjs(paste.createdAt).format('DD MMMM YYYY HH:mm:ss')}
+            </li>
+            <li>
+              <span className="text-blue-800">Syntax : </span> {paste.syntax}
+            </li>
           </ul>
         </div>
       ) : loading ? (

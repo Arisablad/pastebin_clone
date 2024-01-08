@@ -28,7 +28,10 @@ function TextEditor({
     <div className="px-4 lg:col-span-8 mt-10">
       <div className="flex justify-between">
         <p className="font-medium text-xl">{label}</p>
-        <p>Syntax Highlighting</p>
+        <p>
+          Syntax Highlighting:{' '}
+          <span className="text-blue-400 font-bold">{language}</span>
+        </p>
       </div>
       <div className="border border-border h-[300px] w-full overflow-y-auto">
         <CodeEditor

@@ -2,6 +2,7 @@
 import { TvIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import dayjs from 'dayjs';
 
 type PublicPaste = {
   id: string;
@@ -34,7 +35,7 @@ function PasteList({ PublicPastes }: PasteProps) {
                 {singlePaste.syntax}
               </span>
               <span className="text-gray-600 text-sm">
-                {singlePaste.createdAt}
+                {dayjs(singlePaste.createdAt).format('DD-MM-YYYY HH:mm:ss')}
               </span>
             </div>
           </div>

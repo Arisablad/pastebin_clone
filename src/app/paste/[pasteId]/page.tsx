@@ -32,6 +32,7 @@ function SinglePastePage() {
   const { toast } = useToast();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
   const [errors, setErrors] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const getSinglePaste = async () => {
     try {
@@ -62,6 +63,8 @@ function SinglePastePage() {
     } catch (error) {
       console.log('error with fetch', error);
       return;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +101,8 @@ function SinglePastePage() {
             <li>Syntax: {paste.syntax}</li>
           </ul>
         </div>
+      ) : loading ? (
+        <div className="w-full lg:col-span-8"> loading....</div>
       ) : (
         <div className="w-full lg:col-span-8">
           <p>Error {errors}</p>

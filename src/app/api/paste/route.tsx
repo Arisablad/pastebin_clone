@@ -17,6 +17,27 @@ import { authOptions } from '../auth/[...nextauth]/route';
 //   }
 // }
 
+export async function GET(request: NextRequest) {
+  try {
+    await DbConnect();
+    const pastes = await PasteModel.find({ exposure: 'Public' })
+      .sort({ createdAt: -1 })
+      .limit(5);
+    if (pastes) {
+      return NextResponse.json(
+        {
+          message: 'Successfully fetched Pastes',
+          pastes: pastes,
+        },
+        { status: 200 }
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to POST PASTES!');
+  }
+}
+
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const session = await getServerSession(authOptions);

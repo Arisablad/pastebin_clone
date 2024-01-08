@@ -46,6 +46,9 @@ function TextEditor({
           }}
         />
       </div>
+      {code.trim().length < 3 && (
+        <p className="text-red-500">Paste should have at least 3 characters</p>
+      )}
       {pasteExposure && (
         <p className="text-right mt-2">
           Paste Exposure:{' '}

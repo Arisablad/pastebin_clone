@@ -54,6 +54,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
       );
     }
 
+    if (code.trim().length < 3) {
+      return NextResponse.json(
+        { message: 'Code need to have at least 3 characters' },
+        { status: 500 }
+      );
+    }
+
     if (exposure.toLowerCase().trim() === 'private') {
       // check if user is authenticated
       if (!session) {

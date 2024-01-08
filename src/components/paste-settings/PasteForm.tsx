@@ -39,8 +39,8 @@ const formSchema = z.object({
   }),
   code: z
     .string()
-    .min(2, {
-      message: 'Title must have at least 2 characters.',
+    .min(3, {
+      message: 'Title must have at least 3 characters.',
     })
     .optional(),
 });
@@ -95,10 +95,18 @@ const PasteForm = ({ code }: { code?: string }) => {
         title: 'Success',
         description: parsedResponse.message,
       });
+      router.push(
+        `${process.env.NEXT_PUBLIC_URL}/paste/${parsedResponse.pasteId}`
+      );
     }
-    router.push(
-      `${process.env.NEXT_PUBLIC_URL}/paste/${parsedResponse.pasteId}`
-    );
+
+    if (!response.ok) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: parsedResponse.message,
+      });
+    }
   }
 
   return (

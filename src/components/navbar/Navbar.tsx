@@ -1,13 +1,15 @@
 'use client';
-import { ScrollText } from 'lucide-react';
+import { MenuIcon, ScrollText } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
+import { useState } from 'react';
 
 const Navbar = () => {
   const { data: session } = useSession();
   const URL = process.env.NEXT_PUBLIC_URL as string;
+  const [expandHamburger, setExpandHamburger] = useState(false);
 
   return (
     <nav>
@@ -20,6 +22,12 @@ const Navbar = () => {
             </p>
           </Link>
         </div>
+
+        {/* Hamburger Menu */}
+        <MenuIcon
+          className="text-white md:hidden"
+          onClick={() => setExpandHamburger((prev) => !prev)}
+        />
 
         {/*Desktop links* if user is loged in display info about user instead of auth buttons*/}
         {!session ? (
@@ -40,6 +48,27 @@ const Navbar = () => {
           </ul>
         )}
       </div>
+      {expandHamburger && (
+        <div className="bg-blue-600/30 py-14 flex md:hidden items-center flex-col mt-4">
+          {!session ? (
+            <ul className="flex flex-col items-center text-center gap-4">
+              <Button asChild variant={'outline'}>
+                <Link href={`${URL}/sign-up`}>Sign Up</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`${URL}/sign-in`}>Sign In</Link>
+              </Button>
+            </ul>
+          ) : (
+            <ul className="flex flex-col items-center gap-4">
+              <p className="text-white font-medium">{session?.user?.name}</p>
+              <Button variant={'destructive'} onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            </ul>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

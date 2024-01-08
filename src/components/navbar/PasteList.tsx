@@ -9,6 +9,7 @@ type PublicPaste = {
   createdAt: string;
   size: string;
   syntax: string;
+  _id: string;
 };
 type PasteProps = {
   PublicPastes: PublicPaste[];
@@ -18,7 +19,10 @@ function PasteList({ PublicPastes }: PasteProps) {
   return (
     <>
       {PublicPastes.map((singlePaste) => (
-        <Link key={singlePaste.id} href={`paste/${singlePaste._id}`}>
+        <Link
+          key={singlePaste.id}
+          href={`${process.env.NEXT_PUBLIC_URL}/paste/${singlePaste._id}`}
+        >
           <div
             key={singlePaste.id}
             className="flex gap-4 border-b-2 border-border border-dotted py-2 hover:bg-secondary cursor-pointer"

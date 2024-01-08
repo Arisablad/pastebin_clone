@@ -1,9 +1,10 @@
 'use client';
 import Advertisment from '@/components/advertisments/Advertisment';
 import Paste from '@/components/containers/Paste';
+import Sidebar from '@/components/navbar/Sidebar';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/use-toast';
-import { Sidebar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -78,9 +79,10 @@ function SinglePastePage() {
     fetchPastes();
   }, [session]);
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-10 gap-4 border border-border p-2">
+    <div className="grid grid-cols-1 xl:grid-cols-10 gap-4 border border-border p-2 h-min">
       <Advertisment />
       <Sidebar />
+
       {paste && Object.keys(paste).length > 0 ? (
         <div className="lg:col-span-8">
           <h1 className="lg:col-span-8 text-center text-xl font-semibold">
@@ -102,7 +104,14 @@ function SinglePastePage() {
           </ul>
         </div>
       ) : loading ? (
-        <div className="w-full lg:col-span-8"> loading....</div>
+        <div className="w-full lg:col-span-8">
+          <div className="flex w-full flex-col gap-4 items-center">
+            <Skeleton className="h-12 w-full rounded-full bg-accent-foreground" />
+            <Skeleton className="h-12 w-full rounded-full bg-accent-foreground" />
+            <Skeleton className="h-12 w-full rounded-full bg-accent-foreground" />
+            <Skeleton className="h-12 w-full rounded-full bg-accent-foreground" />
+          </div>
+        </div>
       ) : (
         <div className="w-full lg:col-span-8">
           <p>Error {errors}</p>

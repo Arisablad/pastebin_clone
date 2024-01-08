@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, Suspense, useState } from 'react';
 import dynamic from 'next/dynamic';
 import '@uiw/react-textarea-code-editor/dist.css';
 
@@ -14,6 +14,7 @@ function TextEditor({
   label = 'New paste',
   language = 'js',
   pasteExposure = null,
+  placeholder = 'Enter your code',
 }: {
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
@@ -21,6 +22,7 @@ function TextEditor({
   label: string | ReactNode;
   language: string;
   pasteExposure?: string | null;
+  placeholder?: string | undefined;
 }) {
   return (
     <div className="px-4 lg:col-span-8 mt-10">
@@ -32,7 +34,7 @@ function TextEditor({
         <CodeEditor
           value={code}
           language={language}
-          placeholder="Please enter JS code."
+          placeholder={placeholder ?? undefined}
           onChange={(event) => setCode(event.target.value)}
           padding={15}
           disabled={disabled}

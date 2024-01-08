@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import TextEditor from '../text-editor/TextEditor';
 import PasteSettings from '../paste-settings/PasteSettings';
 
@@ -25,6 +25,7 @@ type TPasteProps = {
   label: string;
   fetchedPaste?: TPaste;
   pasteExposure?: string | null;
+  placeholder?: string | undefined;
 };
 
 function Paste({
@@ -34,6 +35,7 @@ function Paste({
   label = 'New paste',
   fetchedPaste,
   pasteExposure = null,
+  placeholder = 'Enter your code',
 }: TPasteProps) {
   const [code, setCode] = useState(fetchedPaste?.code || '');
 
@@ -46,6 +48,7 @@ function Paste({
         setCode={setCode}
         language={language}
         pasteExposure={pasteExposure}
+        placeholder={placeholder}
       />
 
       {showSettings && <PasteSettings code={code} />}

@@ -10,7 +10,9 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { MoreHorizontal } from 'lucide-react';
+import dayjs from 'dayjs';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -29,6 +31,28 @@ export type Paste = {
 
 export const columns: ColumnDef<Paste>[] = [
   {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: 'title',
     header: 'Title',
   },
@@ -39,6 +63,10 @@ export const columns: ColumnDef<Paste>[] = [
   {
     accessorKey: 'createdAt',
     header: 'Created At',
+    cell: ({ row }) => {
+      const createdDate = row.original.createdAt;
+      return dayjs(createdDate).format('DD-MM-YYYY HH:mm:ss');
+    },
   },
   {
     accessorKey: 'exposure',
@@ -49,6 +77,7 @@ export const columns: ColumnDef<Paste>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const paste = row.original;
+      console.log('row', row);
 
       return (
         <DropdownMenu>
@@ -71,12 +100,6 @@ export const columns: ColumnDef<Paste>[] = [
               Copy paste URL
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              Delete Paste
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              Edit Paste
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

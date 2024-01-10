@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { User } from '@/models/MongoModels/UserModel';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { PasteModel } from '@/models/MongoModels/PasteModel';
 
 export async function GET(request: NextRequest) {
   try {
     await DbConnect();
     const session = await getServerSession(authOptions);
-    console.log('session after', session);
 
     if (!session) {
       return NextResponse.json(
@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.log('Error while getting all pastas for user', error);
     return NextResponse.json(
       {
         message: 'Error while getting all pastas for user',
@@ -39,6 +38,56 @@ export async function GET(request: NextRequest) {
       {
         status: 500,
       }
+    );
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    const idsToRemove = await request.json();
+    if (!session) {
+      return NextResponse.json(
+        { message: 'You need to be authorized' },
+        { status: 403 }
+      );
+    }
+    await DbConnect();
+
+    if (idsToRemove.length <= 0) {
+      return NextResponse.json(
+        { message: 'You need to provide items to remove' },
+        { status: 403 }
+      );
+    }
+    // REMOVE PASTAS FROM USER
+    const userInDb = session
+      ? await User.findByIdAndUpdate(
+          session.user.id,
+          {
+            $pull: { pastes: { _id: { $in: idsToRemove } } },
+          },
+          { new: true }
+        )
+      : null;
+
+    if (!userInDb) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    }
+
+    await PasteModel.deleteMany({ _id: { $in: idsToRemove } });
+
+    return NextResponse.json(
+      { message: 'User pastas updated successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log('Error while removing pastas for user');
+    return NextResponse.json(
+      {
+        message: 'Error while removing pastas for user',
+      },
+      { status: 500 }
     );
   }
 }

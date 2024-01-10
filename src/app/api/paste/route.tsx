@@ -78,23 +78,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
         );
       }
 
-      if (user) {
-        // add new private paste to user
-        await user.updateOne({
-          $push: {
-            pastes: {
-              category,
-              syntax,
-              exposure,
-              title,
-              code,
-              userId: session?.user.id,
-              userName: session?.user.name,
-            },
-          },
-        });
-      }
-
       const newlyCreatedPaste = await PasteModel.create({
         category,
         syntax,
@@ -105,6 +88,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
         userName: session?.user.name || 'Anonymous',
       });
 
+      if (user) {
+        // add new private paste to user
+        await user.updateOne({
+          $push: {
+            pastes: {
+              ...newlyCreatedPaste,
+              userId: session?.user.id,
+              userName: session?.user.name,
+            },
+          },
+        });
+      }
+
       return NextResponse.json(
         { message: 'Private paste created', pasteId: newlyCreatedPaste._id },
         { status: 201 }
@@ -113,23 +109,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     // if paste isn't private
     if (exposure !== 'private') {
-      // If user is logged in add paste to his account
-      if (session) {
-        await user?.updateOne({
-          $push: {
-            pastes: {
-              category,
-              syntax,
-              exposure,
-              title,
-              code,
-              userId: session?.user.id || 'Anonymous',
-              userName: session?.user.name || 'Anonymous',
-            },
-          },
-        });
-      }
-
       // Create new paste for anonymous users
       const newlyCreatedPaste = await PasteModel.create({
         category,
@@ -140,6 +119,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
         userId: session?.user.id || 'Annonymous',
         userName: session?.user.name || 'Anonymous',
       });
+
+      // If user is logged in add paste to his account
+      if (session) {
+        await user?.updateOne({
+          $push: {
+            pastes: {
+              ...newlyCreatedPaste,
+              userId: session?.user.id || 'Anonymous',
+              userName: session?.user.name || 'Anonymous',
+            },
+          },
+        });
+      }
       return NextResponse.json(
         {
           message: 'Paste Created Successfully',

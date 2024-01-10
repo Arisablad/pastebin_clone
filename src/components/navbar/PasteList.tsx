@@ -21,7 +21,7 @@ function PasteList({ PublicPastes }: PasteProps) {
     <>
       {PublicPastes.map((singlePaste) => (
         <Link
-          key={singlePaste.id}
+          key={singlePaste._id}
           href={`${process.env.NEXT_PUBLIC_URL}/paste/${singlePaste._id}`}
         >
           <div

@@ -1,27 +1,28 @@
 import { DbConnect } from '@/lib/DbConnection';
-import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { User } from '@/models/MongoModels/UserModel';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    console.log('session', session);
-    const userInDb = session ? await User.findById(session.user.id) : null;
-
     await DbConnect();
+    const session = await getServerSession(authOptions);
+    console.log('session after', session);
+
+    if (!session) {
+      return NextResponse.json(
+        { message: 'You need to be authorized' },
+        { status: 403 }
+      );
+    }
+
+    const userInDb = session ? await User.findById(session.user.id) : null;
 
     if (!userInDb) {
       return NextResponse.json(
         { message: "User doesn't exist in our database" },
         { status: 500 }
-      );
-    }
-    if (!session || userInDb._id !== session.user.id) {
-      return NextResponse.json(
-        { message: 'You need to be authorized' },
-        { status: 403 }
       );
     }
     const userPastes = userInDb.pastes;

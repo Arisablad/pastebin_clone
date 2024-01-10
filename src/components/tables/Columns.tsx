@@ -29,12 +29,16 @@ export type Paste = {
 
 export const columns: ColumnDef<Paste>[] = [
   {
+    accessorKey: 'title',
+    header: 'Title',
+  },
+  {
     accessorKey: 'category',
     header: 'Category',
   },
   {
     accessorKey: 'createdAt',
-    header: 'createdAt',
+    header: 'Created At',
   },
   {
     accessorKey: 'exposure',
@@ -57,6 +61,7 @@ export const columns: ColumnDef<Paste>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              className="cursor-pointer"
               onClick={() =>
                 navigator.clipboard.writeText(
                   `${process.env.NEXT_PUBLIC_URL}/paste/${paste._id}`
@@ -66,8 +71,12 @@ export const columns: ColumnDef<Paste>[] = [
               Copy paste URL
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View paste details</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Delete Paste
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Edit Paste
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

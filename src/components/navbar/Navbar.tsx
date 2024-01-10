@@ -38,12 +38,6 @@ const Navbar = () => {
             <Button asChild>
               <Link href={`${URL}/sign-in`}>Sign In</Link>
             </Button>
-            <Link
-              href={`${URL}/user/pastas`}
-              className="underline text-white letter underline-offset-8 hover:text-blue-400 transition duration-300"
-            >
-              My pastas
-            </Link>
           </ul>
         ) : (
           <ul className="hidden md:flex items-center gap-4">
@@ -51,6 +45,12 @@ const Navbar = () => {
             <Button variant={'destructive'} onClick={() => signOut()}>
               Sign Out
             </Button>
+            <Link
+              href={`${URL}/user/pastas`}
+              className="underline text-white letter underline-offset-8 hover:text-blue-400 transition duration-300"
+            >
+              My pastas
+            </Link>
           </ul>
         )}
       </div>

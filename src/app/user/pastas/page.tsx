@@ -1,206 +1,26 @@
-import Advertisment from '@/components/advertisments/Advertisment';
-import Sidebar from '@/components/navbar/Sidebar';
 import { Paste, columns } from '@/components/tables/Columns';
 import { DataTable } from '@/components/tables/Data-Table';
 import React from 'react';
 
 async function getData(): Promise<Paste[]> {
   // Fetch data from your API here.
-  return [
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userName: 'ramzik',
-      userId: '65996cdc583f7fd4e083895c',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userName: 'ramzik',
-      userId: '65996cdc583f7fd4e083895c',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userName: 'ramzik',
-      userId: '65996cdc583f7fd4e083895c',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userName: 'ramzik',
-      userId: '65996cdc583f7fd4e083895c',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    {
-      category: 'Cryptocurrency',
-      syntax: 'Swift',
-      exposure: 'Private',
-      title: 'ahgehaehaehaeh',
-      code: 'haehaehaebxzcbaehb',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '65996cfb583f7fd4e083895f',
-      createdAt: '2024-01-06T15:08:43.375+00:00',
-      updatedAt: '2024-01-06T15:08:43.375+00:00',
-    },
-    {
-      category: 'Cybersecurity',
-      syntax: 'PHP',
-      exposure: 'Private',
-      title: 'aheasjnashj',
-      code: 'private one',
-      userId: '65996cdc583f7fd4e083895c',
-      userName: 'ramzik',
-      _id: '659bc9a23a3eb35c4dcda8df',
-      createdAt: '2024-01-08T10:08:34.979+00:00',
-      updatedAt: '2024-01-08T10:08:34.979+00:00',
-    },
-    // ...
-  ];
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/user/pastas`
+    );
+    const parsedResponse = await response.json();
+
+    if (!response.ok) {
+      throw new Error(parsedResponse.message);
+    }
+    if (response.ok && !parsedResponse.pastes) {
+      throw new Error(parsedResponse.message);
+    }
+
+    return parsedResponse.pastes;
+  } catch (error) {
+    throw new Error((error as { message: string }).message);
+  }
 }
 
 export default async function UserPastasPage() {
@@ -208,7 +28,11 @@ export default async function UserPastasPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      {data.length > 0 ? (
+        <DataTable columns={columns} data={data} />
+      ) : (
+        <div className="text-xl">No pastes created yet</div>
+      )}
     </div>
   );
 }

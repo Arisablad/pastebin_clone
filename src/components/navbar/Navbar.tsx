@@ -25,7 +25,7 @@ const Navbar = () => {
 
         {/* Hamburger Menu */}
         <MenuIcon
-          className="text-white md:hidden"
+          className="text-white md:hidden cursor-pointer"
           onClick={() => setExpandHamburger((prev) => !prev)}
         />
 
@@ -45,33 +45,42 @@ const Navbar = () => {
             <Button variant={'destructive'} onClick={() => signOut()}>
               Sign Out
             </Button>
-            <Link
-              href={`${URL}/user/pastas`}
-              className="underline text-white letter underline-offset-8 hover:text-blue-400 transition duration-300"
-            >
-              My pastas
-            </Link>
+            <Button asChild className="bg-slate-800">
+              <Link
+                href={`${URL}/user/pastas`}
+                className="underline text-white letter underline-offset-8 hover:text-blue-400 transition duration-300"
+              >
+                My pastas
+              </Link>
+            </Button>
           </ul>
         )}
       </div>
       {expandHamburger && (
-        <div className="bg-blue-600/30 py-14 flex md:hidden items-center flex-col mt-4">
+        <div className="bg-gradient-to-b from-[#023859] to-[#02456c] py-14 flex md:hidden items-center flex-col mt-4 gap-4">
           {!session ? (
-            <ul className="flex flex-col items-center text-center gap-4">
+            <>
               <Button asChild variant={'outline'}>
                 <Link href={`${URL}/sign-up`}>Sign Up</Link>
               </Button>
               <Button asChild>
                 <Link href={`${URL}/sign-in`}>Sign In</Link>
               </Button>
-            </ul>
+            </>
           ) : (
-            <ul className="flex flex-col items-center gap-4">
+            <>
+              <Link
+                href={`${URL}/user/pastas`}
+                className="underline text-white letter underline-offset-8 transition duration-300 hover:bg-blue-900 w-full text-center p-4"
+              >
+                My pastas
+              </Link>
+
               <p className="text-white font-medium">{session?.user?.name}</p>
               <Button variant={'destructive'} onClick={() => signOut()}>
                 Sign Out
               </Button>
-            </ul>
+            </>
           )}
         </div>
       )}

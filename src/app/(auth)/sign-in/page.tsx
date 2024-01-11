@@ -80,7 +80,7 @@ const SignInPage = () => {
   return (
     <div className="bg-[#F9FAFB] mt-24 flex items-center">
       <div className="h-max mx-auto flex flex-col items-center">
-        LOGO
+        <p className="text-2xl font-mono font-bold tracking-wide">PASTENOTE</p>
         <h1 className="text-xl font-bold text-center pb-10">
           Sign in to your account
         </h1>

@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { DbConnect } from '@/lib/DbConnection';
 import { User } from '@/models/MongoModels/UserModel';
 import bcrypt from "bcrypt"
+import { NextAuthOptions } from 'next-auth';
 
 interface JwtFunctionArguments {
     token: {
@@ -58,7 +59,7 @@ interface JwtFunctionArguments {
   }
   }
 
-export const authOptions = {
+export const authOptions :NextAuthOptions = {
     pages:{
       signIn: "/sign-in",
       signOut: "/sign-out"

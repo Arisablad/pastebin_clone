@@ -11,8 +11,6 @@ export default function UserPastasPage() {
   const [unselectAll, setUnselectAll] = useState(0);
   const { toast } = useToast();
 
-  console.log('row selection', rowSelection);
-
   useEffect(() => {
     async function getData(): Promise<void> {
       // Fetch data from your API here.
@@ -57,8 +55,6 @@ export default function UserPastasPage() {
     const idsToRemove = selectedRows.map(
       (selectedRow) => (data[parseInt(selectedRow)] as Paste)._id
     );
-
-    console.log('idsToRemove', idsToRemove);
 
     try {
       if (idsToRemove.length > 0) {

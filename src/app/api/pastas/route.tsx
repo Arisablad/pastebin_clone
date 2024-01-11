@@ -2,8 +2,8 @@ import { DbConnect } from '@/lib/DbConnection';
 import { NextRequest, NextResponse } from 'next/server';
 import { User } from '@/models/MongoModels/UserModel';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]/route';
 import { PasteModel } from '@/models/MongoModels/PasteModel';
+import { authOptions } from '../auth/[...nextauth]/options';
 
 export async function GET(request: NextRequest) {
   try {

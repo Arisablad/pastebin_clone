@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { User } from '@/models/MongoModels/UserModel';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '../auth/[...nextauth]/options';
 
 // export async function GET(request: NextApiRequest) {
 //   try {

@@ -1,13 +1,12 @@
 import { DbConnect } from '@/lib/DbConnection';
 import { PasteModel } from '@/models/MongoModels/PasteModel';
-import { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { User } from '@/models/MongoModels/UserModel';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { pasteId: string } }
 ) {
   try {

@@ -26,7 +26,6 @@ export async function GET(
       );
     }
     await DbConnect();
-    console.log('pasteId', pasteId);
     const foundPaste = await PasteModel.findById(pasteId);
 
     if (!foundPaste) {

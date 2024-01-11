@@ -77,7 +77,6 @@ export const columns: ColumnDef<Paste>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const paste = row.original;
-      console.log('row', row);
 
       return (
         <DropdownMenu>

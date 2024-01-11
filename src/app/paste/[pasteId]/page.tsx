@@ -70,7 +70,7 @@ function SinglePastePage() {
     }
   };
 
-  console.log('paste');
+
 
   useEffect(() => {
     async function fetchPastes() {

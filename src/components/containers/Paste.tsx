@@ -42,7 +42,6 @@ function Paste({
 
   const handleNewLanguage = (lang: string) => {
     setNewLanguage(lang);
-    console.log(' new lang', lang);
   };
 
   return (

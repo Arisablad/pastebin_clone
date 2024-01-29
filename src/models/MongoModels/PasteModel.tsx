@@ -43,6 +43,21 @@ export const pasteSchema = new mongoose.Schema(
       min: 2,
       max: 30,
     },
+    comments: {
+      type: [
+        {
+          user: {
+            type: String,
+            required: true,
+          },
+          comment: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      default: [],
+    }
   },
   { timestamps: true }
 );

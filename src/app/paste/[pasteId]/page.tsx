@@ -25,6 +25,7 @@ type Paste = {
   _id: string;
   userName: string;
   pasteId: string;
+  comments: [];
 };
 
 function SinglePastePage() {
@@ -115,8 +116,7 @@ function SinglePastePage() {
 
 
           {/* COMMENTS */}
-
-          <PasteCommentsList />
+          <PasteCommentsList pasteId={pasteId} />
 
 
 

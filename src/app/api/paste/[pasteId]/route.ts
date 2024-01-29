@@ -12,11 +12,11 @@ export async function GET(
   try {
     const pasteId = params.pasteId;
     const session = await getServerSession(authOptions);
-    let user 
+    let user
 
 
-    if(session){
-    user = User.findById(session.user.id);
+    if (session) {
+      user = User.findById(session.user.id);
     }
 
     if (!pasteId) {
@@ -73,5 +73,44 @@ export async function GET(
       { message: 'Error ocurred during getting single paste' },
       { status: 500 }
     );
+  }
+}
+
+
+export async function POST(request: NextRequest, { params }: { params: { pasteId: string } }) {
+  try {
+    const pasteId = params.pasteId;
+    const { user, message } = await request.json();
+    await DbConnect();
+
+
+
+    const pasteToComment = await PasteModel.findById(pasteId);
+    if (!pasteToComment) {
+      return NextResponse.json({ message: "No paste found" }, { status: 404 })
+    }
+    if (!message) {
+      return NextResponse.json({ message: "You need to provide comment" }, { status: 404 })
+    }
+
+
+
+    await pasteToComment.updateOne({
+      $push: {
+        comments: {
+          user: user,
+          comment: message,
+        }
+      }
+    })
+
+    console.log(pasteToComment)
+
+    return NextResponse.json({ message: "Comment Added successfully" }, { status: 201 })
+
+
+  }
+  catch (error) {
+    console.log("error when adding comment,", error)
   }
 }

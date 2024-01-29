@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
+import { ThemeSwitcher } from '../themes/ThemeSwitcher';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -38,6 +39,7 @@ const Navbar = () => {
             <Button asChild>
               <Link href={`${URL}/sign-in`}>Sign In</Link>
             </Button>
+            <ThemeSwitcher />
           </ul>
         ) : (
           <ul className="hidden md:flex items-center gap-4">
@@ -53,6 +55,7 @@ const Navbar = () => {
                 My pastas
               </Link>
             </Button>
+            <ThemeSwitcher />
           </ul>
         )}
       </div>
@@ -66,6 +69,7 @@ const Navbar = () => {
               <Button asChild>
                 <Link href={`${URL}/sign-in`}>Sign In</Link>
               </Button>
+              <ThemeSwitcher />
             </>
           ) : (
             <>
@@ -80,6 +84,8 @@ const Navbar = () => {
               <Button variant={'destructive'} onClick={() => signOut()}>
                 Sign Out
               </Button>
+              <ThemeSwitcher />
+
             </>
           )}
         </div>

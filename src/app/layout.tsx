@@ -5,6 +5,7 @@ import MaxWidthWrapper from '@/components/containers/MaxWidthWrapper';
 import Navbar from '@/components/navbar/Navbar';
 import { Toaster } from '@/components/ui/toaster';
 import AuthProvider from '@/providers/SessionProvider';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,11 +22,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <Navbar />
-          <MaxWidthWrapper>{children}</MaxWidthWrapper>
-        </AuthProvider>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+          <AuthProvider>
+            <Navbar />
+            <MaxWidthWrapper>{children}</MaxWidthWrapper>
+          </AuthProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

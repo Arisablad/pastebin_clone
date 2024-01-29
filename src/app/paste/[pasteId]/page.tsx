@@ -97,18 +97,18 @@ function SinglePastePage() {
             pasteExposure={paste.exposure}
             language={paste.syntax}
           />
-          <ul className="bg-accent-foreground/20 rounded-md px-4 lg:col-span-8 flex flex-col py-2 items-center">
+          <ul className="bg-secondary/40 rounded-md px-4 lg:col-span-8 flex flex-col py-2 items-center">
             <p className=" font-mono text-xl">Additional Paste info:</p>
             <li>
-              <span className="text-blue-800">Category : </span>
+              <span className="text-blue-400">Category : </span>
               {paste.category}
             </li>
             <li>
-              <span className="text-blue-800">Created At : </span>
+              <span className="text-blue-400">Created At : </span>
               {dayjs(paste.createdAt).format('DD MMMM YYYY HH:mm:ss')}
             </li>
             <li>
-              <span className="text-blue-800">Syntax : </span> {paste.syntax}
+              <span className="text-blue-400">Syntax : </span> {paste.syntax}
             </li>
           </ul>
         </div>

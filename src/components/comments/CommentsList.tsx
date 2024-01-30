@@ -1,4 +1,4 @@
-import { Fragment, use, useState } from "react"
+import { Fragment, use, useMemo, useState } from "react"
 import { Button } from "../ui/button"
 import PasteComment from "./Comment"
 import { ChevronLeft, ChevronRight } from "lucide-react"
@@ -25,7 +25,7 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
     const [currentCommentsPage, setCurrentCommentsPage] = useState(1);
     const [commentsPerPage, setCommentsPerPage] = useState(4);
     const [comments, setComments] = useState(PasteProps.pasteComments || []);
-    const [amountOfPages, setAmountOfPages] = useState(Math.ceil(comments.length) / commentsPerPage)
+    const [amountOfPages, setAmountOfPages] = useState(0)
     const { data: session } = useSession();
 
     const [comment, setComment] = useState({
@@ -37,6 +37,11 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
     const { toast } = useToast();
     const lastPostIndex = currentCommentsPage * commentsPerPage
     const firstPostIndex = lastPostIndex - commentsPerPage
+
+
+    const computePageAmount = useMemo(() => {
+        setAmountOfPages(Math.ceil(comments.length / commentsPerPage));
+    }, [comments])
 
 
     const currentComments = comments.slice(firstPostIndex, lastPostIndex)
@@ -83,13 +88,13 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
             <div className='flex flex-col px-4 gap-2'>
 
 
-
-                {currentComments.map((cmnt, _id) =>
+                {currentComments.length > 0 ? currentComments.map((cmnt, _id) =>
                     <Fragment key={_id}>
                         <PasteComment username={cmnt.user} comment={cmnt.comment} />
                     </Fragment>
 
-                )}
+                ) : <p className="text-secondary/90">No comments yet... Be the first comment</p>}
+
 
 
             </div>
@@ -97,22 +102,26 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
 
 
             {/* PAGINATION */}
-            <div className="text-green-500 flex flex-col items-center justify-center gap-4 mt-12">
-                <div className="flex">
-                    <ChevronLeft className="hover:text-gray-500 cursor-pointer" onClick={() => {
-                        if (currentCommentsPage > 1) {
-                            setCurrentCommentsPage(prev => prev += -1)
-                        }
-                    }} />
-                    {currentCommentsPage}
-                    <ChevronRight className="hover:text-gray-500 cursor-pointer" onClick={() => {
-                        if (currentCommentsPage < amountOfPages) {
-                            setCurrentCommentsPage(prev => prev += 1)
-                        }
-                    }} />
+
+            {currentComments.length > 0 &&
+                <div className="text-green-500 flex flex-col items-center justify-center gap-4 mt-12">
+                    <div className="flex">
+                        <ChevronLeft className="hover:text-gray-500 cursor-pointer" onClick={() => {
+                            if (currentCommentsPage > 1) {
+                                setCurrentCommentsPage(prev => prev += -1)
+                            }
+                        }} />
+                        {currentCommentsPage}
+                        <ChevronRight className="hover:text-gray-500 cursor-pointer" onClick={() => {
+                            if (currentCommentsPage < amountOfPages) {
+                                setCurrentCommentsPage(prev => prev += 1)
+                            }
+                        }} />
+                    </div>
+                    <div className="">Number of Pages: {amountOfPages}</div>
                 </div>
-                <div className="">Number of Pages: {amountOfPages + 1}</div>
-            </div>
+            }
+
 
 
             {/*WRITE YOUR COMMENT HERE*/}
@@ -122,7 +131,7 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
                         ...prev,
                         comment: event.target.value
                     }))
-                }} className='w-full p-4' placeholder='write your comment here'></textarea>
+                }} className='w-full p-4 rounded-md' placeholder='write your comment here'></textarea>
                 <Button onClick={handleSendComment} variant={'default'} className='bg-card-foreground text-secondary'>Send</Button>
             </div>
 

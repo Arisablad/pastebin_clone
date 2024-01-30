@@ -5,6 +5,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { User } from '@/models/MongoModels/UserModel';
 import { authOptions } from '../../auth/[...nextauth]/options';
 
+
+
+
+type CommentType = {
+  user: string;
+  comment: string;
+  _id: string;
+}
+
+
+
+
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { pasteId: string } }
@@ -77,6 +90,8 @@ export async function GET(
 }
 
 
+// CREATE COMMENT
+
 export async function POST(request: NextRequest, { params }: { params: { pasteId: string } }) {
   try {
     const pasteId = params.pasteId;
@@ -117,5 +132,49 @@ export async function POST(request: NextRequest, { params }: { params: { pasteId
   }
   catch (error) {
     console.log("error when adding comment,", error)
+  }
+}
+
+
+// EDIT COMMENT
+
+export async function PATCH(request: NextRequest, { params }: { params: { pasteId: string } }) {
+  try {
+    const pasteId = params.pasteId;
+    const { comment, commentId } = await request.json();
+
+    if (!pasteId) {
+      return NextResponse.json({ message: "You need to provide a paste id of comment to delete" }, { status: 404 })
+    }
+
+    if (!comment || !commentId) {
+      return NextResponse.json({ message: "You need to provide all required fields : comment, commentId" }, { status: 404 })
+    }
+    await DbConnect()
+
+    const pasteToUpdate = await PasteModel.findById(pasteId)
+    if (!pasteToUpdate) {
+      return NextResponse.json({ message: "Paste Doesn't exists" }, { status: 404 })
+    }
+
+    const commentToUpdate = pasteToUpdate.comments.find((com: CommentType) => com._id == commentId);
+
+    commentToUpdate.comment = comment
+
+
+
+    if (!commentToUpdate) {
+      return NextResponse.json({ message: "Comment doesn't exist" }, { status: 404 });
+    }
+
+    // Save the updated paste
+    await pasteToUpdate.save();
+
+    // Optionally, you can return the updated comment as a response
+    return NextResponse.json({ message: "comment updated sucessfully", data: commentToUpdate }, { status: 201 });
+
+  }
+  catch (error) {
+    console.log("Error during editing comment", error)
   }
 }

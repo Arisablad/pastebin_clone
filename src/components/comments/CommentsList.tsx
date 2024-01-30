@@ -60,7 +60,7 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
 
     const handleSendComment = async () => {
         if (comment.comment.trim().length > 5) {
-            const response = await fetch(`${`${process.env.NEXT_PUBLIC_API_URL}/paste/${PasteProps.pasteId}`}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paste/${PasteProps.pasteId}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
 
                 {currentComments.length > 0 ? currentComments.map((cmnt, _id) =>
                     <Fragment key={_id}>
-                        <PasteComment username={cmnt.user} commentId={cmnt._id} comment={cmnt.comment} handleCommentChange={handleCommentChange} />
+                        <PasteComment username={cmnt.user} commentId={cmnt._id} comment={cmnt.comment} handleCommentChange={handleCommentChange} pasteId={PasteProps.pasteId} />
                     </Fragment>
 
                 ) : <p className="text-secondary/90">No comments yet... Be the first comment</p>}

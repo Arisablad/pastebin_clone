@@ -5,9 +5,34 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSepar
 import { Button } from "../ui/button";
 import { useState } from "react";
 
-const PasteComment = ({ username, commentId, comment, handleCommentChange }: { username: string, commentId: string, comment: string, handleCommentChange: (newComment: string, id: string) => void }) => {
+
+
+type CommentProps = {
+    username: string;
+    commentId: string;
+    comment: string;
+    pasteId: string;
+    handleCommentChange: (newComment: string, id: string) => void
+}
+
+const PasteComment = ({ username, commentId, comment, pasteId, handleCommentChange }: CommentProps) => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false)
+
+
+    const handleOnBlur = async (editedComment: string, commentId: string) => {
+        const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/paste/${pasteId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                comment: editedComment,
+                commentId: commentId
+            })
+        })
+        setEdit(false)
+    }
 
     return (
         <div className='bg-secondary flex flex-col rounded-md px-2 py-4 shadow-md relative'>
@@ -26,14 +51,14 @@ const PasteComment = ({ username, commentId, comment, handleCommentChange }: { u
                         <DropdownMenuContent className="w-56">
                             <DropdownMenuLabel></DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <div className="cursor-pointer hover:bg-secondary py-2" onClick={() => { setEdit(true) }}>Edit</div>
-                            <div>Remove</div>
+                            <div className="cursor-pointer hover:bg-secondary py-2 px-2" onClick={() => { setEdit(true) }}>Edit</div>
+                            <div className="cursor-pointer hover:bg-secondary py-2 px-2">Remove</div>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 }
             </div>
             {edit ? (
-                <textarea className='' value={comment} onChange={(event) => handleCommentChange(event.target.value, commentId)} onBlur={() => { setEdit(false) }}>
+                <textarea className='' value={comment} onChange={(event) => handleCommentChange(event.target.value, commentId)} onBlur={(event) => handleOnBlur(event?.target.value, commentId)}>
 
                 </textarea>
             ) :

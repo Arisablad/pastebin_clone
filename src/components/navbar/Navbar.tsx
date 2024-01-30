@@ -33,6 +33,9 @@ const Navbar = () => {
         {/*Desktop links* if user is loged in display info about user instead of auth buttons*/}
         {!session ? (
           <ul className="hidden md:flex items-center gap-4">
+            <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
+              <Link href={`${URL}/rules`}>Rules</Link>
+            </Button>
             <Button asChild variant={'outline'}>
               <Link href={`${URL}/sign-up`}>Sign Up</Link>
             </Button>
@@ -44,6 +47,9 @@ const Navbar = () => {
         ) : (
           <ul className="hidden md:flex items-center gap-4">
             <p className="text-white font-medium">{session?.user?.name}</p>
+            <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
+              <Link href={`${URL}/rules`}>Rules</Link>
+            </Button>
             <Button variant={'destructive'} onClick={() => signOut()}>
               Sign Out
             </Button>
@@ -63,6 +69,9 @@ const Navbar = () => {
         <div className="bg-gradient-to-b from-[#023859] to-[#02456c] py-14 flex md:hidden items-center flex-col mt-4 gap-4">
           {!session ? (
             <>
+              <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
+                <Link href={`${URL}/rules`}>Rules</Link>
+              </Button>
               <Button asChild variant={'outline'}>
                 <Link href={`${URL}/sign-up`}>Sign Up</Link>
               </Button>

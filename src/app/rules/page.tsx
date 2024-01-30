@@ -29,7 +29,7 @@ const RulesPage = () => {
 
             <p className="py-8">
                 Broadly speaking, the site was created to help programmers. You are however welcome to post any type of text to Pastebin.
-                Please do not post email lists, password lists or personal information. The "report abuse" feature can be used to flag such pastes and they will be deleted.
+                Please do not post email lists, password lists or personal information. The report abuse feature can be used to flag such pastes and they will be deleted.
             </p>
         </div>
     )

@@ -80,7 +80,8 @@ export async function GET(
 export async function POST(request: NextRequest, { params }: { params: { pasteId: string } }) {
   try {
     const pasteId = params.pasteId;
-    const { user, message } = await request.json();
+    const { user, comment } = await request.json();
+    const session = await getServerSession(authOptions);
     await DbConnect();
 
 
@@ -89,22 +90,26 @@ export async function POST(request: NextRequest, { params }: { params: { pasteId
     if (!pasteToComment) {
       return NextResponse.json({ message: "No paste found" }, { status: 404 })
     }
-    if (!message) {
+    if (!comment) {
       return NextResponse.json({ message: "You need to provide comment" }, { status: 404 })
     }
 
+    if (session) {
+      if (session.user.name !== user) {
+        return NextResponse.json({ message: "You need to be authorized" }, { status: 401 })
+      }
+    }
 
 
     await pasteToComment.updateOne({
       $push: {
         comments: {
           user: user,
-          comment: message,
+          comment: comment,
         }
       }
     })
 
-    console.log(pasteToComment)
 
     return NextResponse.json({ message: "Comment Added successfully" }, { status: 201 })
 

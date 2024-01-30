@@ -5,21 +5,32 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useToast } from "../ui/use-toast"
 import { useSession } from "next-auth/react"
 
-const PasteCommentsList = ({ pasteId }: { pasteId: string }) => {
+
+type PasteCommentsProps = {
+    pasteId: string;
+    pasteComments: PasteCommentType[];
+}
+
+type PasteCommentType = {
+    user: string,
+    comment: string
+    _id: string
+}
 
 
-    const CmntList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
+const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
+
 
 
     const [currentCommentsPage, setCurrentCommentsPage] = useState(1);
     const [commentsPerPage, setCommentsPerPage] = useState(4);
-    const [amountOfPages, setAmountOfPages] = useState(Math.ceil(CmntList.length) / commentsPerPage)
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(PasteProps.pasteComments || []);
+    const [amountOfPages, setAmountOfPages] = useState(Math.ceil(comments.length) / commentsPerPage)
     const { data: session } = useSession();
 
     const [comment, setComment] = useState({
         user: session?.user.name || "anonymous",
-        message: "",
+        comment: "",
     });
 
 
@@ -28,18 +39,30 @@ const PasteCommentsList = ({ pasteId }: { pasteId: string }) => {
     const firstPostIndex = lastPostIndex - commentsPerPage
 
 
-    const currentComments = CmntList.slice(firstPostIndex, lastPostIndex)
+    const currentComments = comments.slice(firstPostIndex, lastPostIndex)
 
 
-    const handleSendComment = () => {
-        if (comment.message.trim().length > 5) {
-            fetch(`${`${process.env.NEXT_PUBLIC_API_URL}/paste/${pasteId}`}`, {
+    const handleSendComment = async () => {
+        if (comment.comment.trim().length > 5) {
+            const response = await fetch(`${`${process.env.NEXT_PUBLIC_API_URL}/paste/${PasteProps.pasteId}`}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(comment),
             })
+            if (response.ok && response.status === 201) {
+                toast({
+                    variant: "default",
+                    title: "Success",
+                    description: "Comment Successfully added.",
+                })
+                setComments([...comments, { ...comment, _id: "asaeghahaehahahaeh" }])
+                setComment({
+                    user: session?.user.name || "anonymous",
+                    comment: "",
+                })
+            }
         }
         else {
             toast(
@@ -61,9 +84,9 @@ const PasteCommentsList = ({ pasteId }: { pasteId: string }) => {
 
 
 
-                {currentComments.map(cmnt =>
-                    <Fragment key={cmnt}>
-                        <PasteComment />
+                {currentComments.map((cmnt, _id) =>
+                    <Fragment key={_id}>
+                        <PasteComment username={cmnt.user} comment={cmnt.comment} />
                     </Fragment>
 
                 )}
@@ -74,27 +97,30 @@ const PasteCommentsList = ({ pasteId }: { pasteId: string }) => {
 
 
             {/* PAGINATION */}
-            <div className="text-green-500 flex justify-center gap-4 mt-12">
-                <ChevronLeft className="hover:text-gray-500 cursor-pointer" onClick={() => {
-                    if (currentCommentsPage > 1) {
-                        setCurrentCommentsPage(prev => prev += -1)
-                    }
-                }} />
-                {currentCommentsPage}
-                <ChevronRight className="hover:text-gray-500 cursor-pointer" onClick={() => {
-                    if (currentCommentsPage < amountOfPages) {
-                        setCurrentCommentsPage(prev => prev += 1)
-                    }
-                }} />
+            <div className="text-green-500 flex flex-col items-center justify-center gap-4 mt-12">
+                <div className="flex">
+                    <ChevronLeft className="hover:text-gray-500 cursor-pointer" onClick={() => {
+                        if (currentCommentsPage > 1) {
+                            setCurrentCommentsPage(prev => prev += -1)
+                        }
+                    }} />
+                    {currentCommentsPage}
+                    <ChevronRight className="hover:text-gray-500 cursor-pointer" onClick={() => {
+                        if (currentCommentsPage < amountOfPages) {
+                            setCurrentCommentsPage(prev => prev += 1)
+                        }
+                    }} />
+                </div>
+                <div className="">Number of Pages: {amountOfPages + 1}</div>
             </div>
 
 
             {/*WRITE YOUR COMMENT HERE*/}
             < div className='flex items-center gap-4 mt-12' >
-                <textarea onChange={(event) => {
+                <textarea value={comment.comment} onChange={(event) => {
                     setComment(prev => ({
                         ...prev,
-                        message: event.target.value
+                        comment: event.target.value
                     }))
                 }} className='w-full p-4' placeholder='write your comment here'></textarea>
                 <Button onClick={handleSendComment} variant={'default'} className='bg-card-foreground text-secondary'>Send</Button>

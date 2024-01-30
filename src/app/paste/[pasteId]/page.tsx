@@ -116,7 +116,7 @@ function SinglePastePage() {
 
 
           {/* COMMENTS */}
-          <PasteCommentsList pasteId={pasteId} />
+          <PasteCommentsList pasteId={pasteId} pasteComments={paste.comments} />
 
 
 

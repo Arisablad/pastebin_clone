@@ -46,6 +46,17 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
 
     const currentComments = comments.slice(firstPostIndex, lastPostIndex)
 
+    const handleCommentChange = (newComment: string, id: string) => {
+        console.log("newComment", newComment)
+        const IdOfCommentToChange = comments.find(cmnt => cmnt._id == id)?._id
+        setComments(prev => prev.map(element => {
+            if (element._id === IdOfCommentToChange) {
+                element.comment = newComment
+            }
+            return element
+        }))
+    }
+
 
     const handleSendComment = async () => {
         if (comment.comment.trim().length > 5) {
@@ -90,7 +101,7 @@ const PasteCommentsList = (PasteProps: PasteCommentsProps) => {
 
                 {currentComments.length > 0 ? currentComments.map((cmnt, _id) =>
                     <Fragment key={_id}>
-                        <PasteComment username={cmnt.user} comment={cmnt.comment} />
+                        <PasteComment username={cmnt.user} commentId={cmnt._id} comment={cmnt.comment} handleCommentChange={handleCommentChange} />
                     </Fragment>
 
                 ) : <p className="text-secondary/90">No comments yet... Be the first comment</p>}

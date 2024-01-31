@@ -34,7 +34,7 @@ const Navbar = () => {
         {!session ? (
           <ul className="hidden md:flex items-center gap-4">
             <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
-              <Link href={`${URL}/rules`}>Rules</Link>
+              <Link href={`${URL}/faq`}>Faq</Link>
             </Button>
             <Button asChild variant={'outline'}>
               <Link href={`${URL}/sign-up`}>Sign Up</Link>
@@ -48,7 +48,7 @@ const Navbar = () => {
           <ul className="hidden md:flex items-center gap-4">
             <p className="text-white font-medium">{session?.user?.name}</p>
             <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
-              <Link href={`${URL}/rules`}>Rules</Link>
+              <Link href={`${URL}/faq`}>Faq</Link>
             </Button>
             <Button variant={'destructive'} onClick={() => signOut()}>
               Sign Out
@@ -70,7 +70,7 @@ const Navbar = () => {
           {!session ? (
             <>
               <Button asChild variant={'outline'} className='bg-red-500/95 hover:bg-red-700 text-red-100'>
-                <Link href={`${URL}/rules`}>Rules</Link>
+                <Link href={`${URL}/faq`}>Faq</Link>
               </Button>
               <Button asChild variant={'outline'}>
                 <Link href={`${URL}/sign-up`}>Sign Up</Link>

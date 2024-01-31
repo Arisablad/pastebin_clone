@@ -21,7 +21,7 @@ const PasteComment = ({ username, commentId, comment, pasteId, handleCommentChan
 
 
     const handleOnBlur = async (editedComment: string, commentId: string) => {
-        const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/paste/${pasteId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paste/${pasteId}`, {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json'
@@ -52,13 +52,13 @@ const PasteComment = ({ username, commentId, comment, pasteId, handleCommentChan
                             <DropdownMenuLabel></DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <div className="cursor-pointer hover:bg-secondary py-2 px-2" onClick={() => { setEdit(true) }}>Edit</div>
-                            <div className="cursor-pointer hover:bg-secondary py-2 px-2">Remove</div>
+                            {/* <div className="cursor-pointer hover:bg-secondary py-2 px-2">Remove</div> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 }
             </div>
             {edit ? (
-                <textarea className='' value={comment} onChange={(event) => handleCommentChange(event.target.value, commentId)} onBlur={(event) => handleOnBlur(event?.target.value, commentId)}>
+                <textarea className='mt-2 p-2' value={comment} onChange={(event) => handleCommentChange(event.target.value, commentId)} onBlur={(event) => handleOnBlur(event?.target.value, commentId)}>
 
                 </textarea>
             ) :

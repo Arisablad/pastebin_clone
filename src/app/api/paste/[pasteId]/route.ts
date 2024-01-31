@@ -109,6 +109,10 @@ export async function POST(request: NextRequest, { params }: { params: { pasteId
       return NextResponse.json({ message: "You need to provide comment" }, { status: 404 })
     }
 
+    if (comment.trim().length < 5) {
+      return NextResponse.json({ message: "Comment need to have at least 5 characters" }, { status: 501 })
+    }
+
     if (session) {
       if (session.user.name !== user) {
         return NextResponse.json({ message: "You need to be authorized" }, { status: 401 })
